@@ -165,7 +165,7 @@ class CursBNR_Widget extends WP_Widget {
 <?php
 			foreach ($rates as $key => $value) :
 				$currency = strtolower($key);
-				$checked = (in_array($currency, $instance['currencies'])) ? 'checked="checked"' : '';
+				$checked = (in_array($currency, (array) $instance['currencies'])) ? 'checked="checked"' : '';
 ?>
 				<p>
 					<label for="<?php echo $this->get_field_id($currency); ?>">

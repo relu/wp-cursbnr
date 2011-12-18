@@ -29,8 +29,16 @@ License: GPLv2 or later
 
 /**
  * Registers the [curs_bnr] shortcode
+ * Accepts currency codes (ex. USD, EUR) as attributes
+ * and an optional 'nocss' attribute to disable the
+ * default css styling
  */
 add_shortcode('curs_bnr', 'cbnr_the_exchange');
+
+/**
+ * Register the widget
+ */
+add_action('widgets_init', create_function('', 'register_widget("CursBNR_Widget");'));
 
 /**
  * Get XML from bnro.ro as SimpleXML
@@ -53,7 +61,7 @@ function cbnr_get_rates() {
 	$rates = array();
 
 	foreach ($xml->Cube->Rate as $rate) {
-		$currency = (string) $rate->attributes()->currency;
+		$currency = (string) strtolower($rate->attributes()->currency);
 		$rates[$currency] = (double) $rate;
 	}
 
@@ -69,7 +77,7 @@ function cbnr_the_exchange($attrs = '') {
 
 	if (is_array($attrs)) {
 		foreach ($attrs as &$atr)
-			$atr = strtoupper($atr);
+			$atr = strtolower($atr);
 
 		unset ($atr);
 
@@ -77,13 +85,11 @@ function cbnr_the_exchange($attrs = '') {
 	}
 
 	if (empty($rates))
-		return false;
+		return;
 
-	if (! is_array($attrs) || ! in_array('NO-CSS', $attrs)) :
+	if (! is_array($attrs) || ! in_array('nocss', $attrs)) :
 ?>
-	<style type="text/css">
-		@import url('<?php echo plugins_url('style.css', __FILE__); ?>');
-	</style>
+	<style type="text/css">@import url('<?php echo plugins_url('style.css', __FILE__); ?>');</style>
 <?php
 	endif;
 ?>
@@ -91,17 +97,18 @@ function cbnr_the_exchange($attrs = '') {
 	<div id="cbnr">
 		<h4>Curs Valutar <img src="<?php echo cbnr_get_icon_url('ron'); ?>"></h4>
 <?php
-	foreach ($rates as $key => $value) {
+
+	foreach ($rates as $key => $value) :
 ?>
 
 		<div class="cbnr_row">
-			<div class="cnbr_flag"><img src="<?php echo cbnr_get_icon_url($key); ?>" title="<?php echo $key; ?>"></div>
-			<div class="cbnr_currency"><?php echo $key; ?></div>
+			<div class="cnbr_flag"><img src="<?php echo cbnr_get_icon_url($key); ?>" title="<?php echo strtoupper($key); ?>"></div>
+			<div class="cbnr_currency"><?php echo strtoupper($key); ?></div>
 			<div class="cbnr_value"><?php echo $value; ?> RON</div>
 		</div>
 
 <?php
-	}
+	endforeach;
 ?>
 		<span class="cbnr_credits">Curs oferit de <a href="http://www.bnro.ro">Banca Națională a României</a></span>
 	</div>
@@ -121,6 +128,71 @@ function cbnr_get_icon_url($currency) {
 		$icon_src = '';
 
 	return $icon_src;
+}
+
+class CursBNR_Widget extends WP_Widget {
+	function __construct() {
+		parent::WP_Widget(
+			'cursbnr_widget',
+			'Curs BNR',
+			array()
+		);
+	}
+
+	function widget($args, $instance) {
+		extract($args);
+
+		$currencies = implode(' ', (array) $instance['currencies']);
+		$nocss = ($instance['nocss']) ? ' nocss' : '';
+
+		echo $before_widget;
+
+		echo do_shortcode('[curs_bnr ' . $currencies . $nocss . ']');
+
+		echo $after_widget;
+	}
+
+	function update($new_instance, $old_instance) {
+		$instance = $old_instance;
+		$instance['currencies'] = $new_instance['currencies'];
+		$instance['nocss'] = $new_instance['nocss'];
+
+		return $instance;
+	}
+
+	function form($instance) {
+		$rates = cbnr_get_rates();
+
+		if (! empty($rates) && is_array($rates)) :
+?>
+		<h3><?php _e('Selectați valutele'); ?></h3>
+<?php
+			foreach ($rates as $key => $value) :
+				$currency = strtolower($key);
+				$checked = (in_array($currency, $instance['currencies'])) ? 'checked="checked"' : '';
+?>
+				<p>
+					<label for="<?php echo $this->get_field_id($currency); ?>">
+						<input id="<?php echo $this->get_field_id($currency); ?>" type="checkbox" name="<?php echo $this->get_field_name('currencies'); ?>[]" value="<?php echo $currency; ?>" <?php echo $checked; ?>>
+						<img src="<?php echo cbnr_get_icon_url($currency); ?>" />
+						<?php echo strtoupper($key); ?>
+					</label>
+				</p>
+<?php
+			endforeach;
+		endif;
+
+		$nocsschecked = ($instance['nocss']) ? 'checked="checked"' : '';
+?>
+		<h3><?php _e('Stlizare CSS'); ?></h3>
+		<p>
+			<label for="<?php echo $this->get_field_id('nocss'); ?>">
+				<input id="<?php echo $this->get_field_id('nocss'); ?>" type="checkbox" name="<?php echo $this->get_field_name('nocss'); ?>" <?php echo $nocsschecked; ?>>
+				<?php _e('Exclude stilizare CSS prestabilită'); ?>
+			</label>
+		</p>
+<?php
+	}
 }
 
 ?>

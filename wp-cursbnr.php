@@ -1,7 +1,7 @@
 <?php
 /**
 Plugin Name: Curs BNR
-Plugin URI: https://github.com/relu
+Plugin URI: https://github.com/relu/wp-cursbnr
 Description: Cursul BNR oferit de http://www.bnro.ro
 Author: Aurel Canciu
 Version: 1.0

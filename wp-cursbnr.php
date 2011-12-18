@@ -130,12 +130,15 @@ function cbnr_get_icon_url($currency) {
 	return $icon_src;
 }
 
+/**
+ * The widget
+ */
 class CursBNR_Widget extends WP_Widget {
 	function __construct() {
 		parent::WP_Widget(
 			'cursbnr_widget',
 			'Curs BNR',
-			array()
+			array('description' => 'Cursul oficial al Băncii Naționale Române')
 		);
 	}
 

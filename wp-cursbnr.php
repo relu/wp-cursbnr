@@ -87,32 +87,25 @@ function cbnr_the_exchange($attrs = '') {
 	if (empty($rates))
 		return;
 
-	if (! is_array($attrs) || ! in_array('nocss', $attrs)) :
-?>
-	<style type="text/css">@import url('<?php echo plugins_url('style.css', __FILE__); ?>');</style>
-<?php
-	endif;
-?>
+	$html = '';
 
-	<div id="cbnr">
-		<h3>Curs Valutar <img src="<?php echo cbnr_get_icon_url('ron'); ?>"></h3>
-<?php
+	if (! is_array($attrs) || ! in_array('nocss', $attrs))
+		$html .= '<style type="text/css">@import url("' . plugins_url('style.css', __FILE__) . '");</style>';
 
-	foreach ($rates as $key => $value) :
-?>
+	$html .= '<div id="cbnr">';
+	$html .= '	<h3>Curs Valutar <img src="' . cbnr_get_icon_url('ron') . '"></h3>';
 
-		<div class="cbnr_row">
-			<div class="cnbr_flag"><img src="<?php echo cbnr_get_icon_url($key); ?>" title="<?php echo strtoupper($key); ?>"></div>
-			<div class="cbnr_currency"><?php echo strtoupper($key); ?></div>
-			<div class="cbnr_value"><?php echo $value; ?> RON</div>
-		</div>
+	foreach ($rates as $key => $value) {
+		$html .= '	<div class="cbnr_row">';
+		$html .= '		<div class="cnbr_flag"><img src="' . cbnr_get_icon_url($key) . '" title="' . strtoupper($key) . '"></div>';
+		$html .= '		<div class="cbnr_currency">' . strtoupper($key) . '</div>';
+		$html .= '		<div class="cbnr_value">' . $value . ' RON</div>';
+		$html .= '	</div>';
+	}
+		$html .= '	<span class="cbnr_credits">Curs oferit de <a href="http://www.bnro.ro">Banca Națională a României</a></span>';
+	$html .= '</div>';
 
-<?php
-	endforeach;
-?>
-		<span class="cbnr_credits">Curs oferit de <a href="http://www.bnro.ro">Banca Națională a României</a></span>
-	</div>
-<?php
+	return $html;
 }
 
 /**

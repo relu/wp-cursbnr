@@ -3,7 +3,7 @@ Contributors: shockware
 Tags: exchange, curs valutar, bnr
 Requires at least: 2.9
 Tested up to: 3.3
-Stable tag: 1.0
+Stable tag: 1.1
 
 Cursul BNR oferit de http://www.bnro.ro
 
@@ -41,6 +41,9 @@ astfel îți poți defini propria configurație CSS.
 1. Curs valutar
 
 == Changelog ==
+
+= 1.1 =
+* Added the current date
 
 = 1.0 =
 * Initial release

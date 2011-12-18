@@ -95,7 +95,7 @@ function cbnr_the_exchange($attrs = '') {
 ?>
 
 	<div id="cbnr">
-		<h4>Curs Valutar <img src="<?php echo cbnr_get_icon_url('ron'); ?>"></h4>
+		<h3>Curs Valutar <img src="<?php echo cbnr_get_icon_url('ron'); ?>"></h3>
 <?php
 
 	foreach ($rates as $key => $value) :

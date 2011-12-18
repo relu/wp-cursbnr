@@ -92,8 +92,9 @@ function cbnr_the_exchange($attrs = '') {
 	if (! is_array($attrs) || ! in_array('nocss', $attrs))
 		$html .= '<style type="text/css">@import url("' . plugins_url('style.css', __FILE__) . '");</style>';
 
-	$html .= '<div id="cbnr">';
+	$html .= '<div class="cbnr">';
 	$html .= '	<h3>Curs Valutar <img src="' . cbnr_get_icon_url('ron') . '"></h3>';
+	$html .= '	<div class="cbnr_date">' . date('j F Y') . '</div>';
 
 	foreach ($rates as $key => $value) {
 		$html .= '	<div class="cbnr_row">';

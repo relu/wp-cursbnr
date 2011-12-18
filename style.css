@@ -1,4 +1,4 @@
-#cbnr {
+.cbnr {
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	width: 220px;
@@ -16,7 +16,10 @@
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
 	color: #111 !important;
 }
-#cbnr .cbnr_row {
+.cbnr .cbnr_date {
+	margin: 0 0 10px 0;
+}
+.cbnr .cbnr_row {
 	width: 100%;
 	border-bottom: 1px solid #ccc;
 	clear: both;
@@ -24,35 +27,35 @@
 	height: 2em;
 	box-shadow: 0 -1px 0 #fff inset;
 }
-#cbnr .cbnr_row div {
+.cbnr .cbnr_row div {
 	padding: 5px 10px;
 }
-#cbnr .cnbr_flag {
+.cbnr .cnbr_flag {
 	width: 18px;
 	float: left;
 }
-#cbnr .cnbr_flag img {
+.cbnr .cnbr_flag img {
 	border: 0 none;
 }
-#cbnr .cbnr_currency {
+.cbnr .cbnr_currency {
 	font-weight: bold;
 	float: left;
 }
-#cbnr .cbnr_value {
+.cbnr .cbnr_value {
 	float: right;
 }
-#cbnr h3 {
+.cbnr h3 {
 	font-weight: bold;
 	font-size: 18px;
-	margin: 0 0 10px 0;
+	margin: 0;
 }
-#cbnr .cbnr_credits {
+.cbnr .cbnr_credits {
 	font-size: 9px;
 	clear: both;
 	display: block;
 	text-align: center;
 	margin-top: 10px;
 }
-#cbnr .cbnr_credits a {
+.cbnr .cbnr_credits a {
 	color: red !important;
 }
